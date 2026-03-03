@@ -1,0 +1,80 @@
+---
+title: "GitHub HW"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+```
+
+```{r}
+clean_diamond=ggplot2::diamonds %>%
+  filter(
+    (color == "D" | color == "G" | color == "J"), 
+    (clarity == "I1" | clarity == "VS1" | clarity == "IF")
+  ) %>% count(color,clarity)
+head(clean_diamond) %>% knitr::kable()
+```
+^[Question 1 complete]
+
+###Question 2
+
+
+```{r}
+ggplot(diamonds, aes(x=carat, y=price))+geom_point(alpha=0.1)+geom_smooth(method="lm", color="red")
+```
+
+There is a positive, moderate strength relationship between carat and price of diamonds. 
+
+^[Question 2 complete]
+
+
+### Question 3
+
+
+```{r}
+ggplot(diamonds, aes(x=carat, y=price, color=color))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+```
+
+Generally, as the carat increases for all diamond colors, the price does as well. However, all the diamonds tend to follow this relationship no matter their color. Diamond color G, H, I, J, E, F all follow the trend of increasing carats leading to inceeasing price. However, diamond color D tends to have a higher price at lower carats. 
+
+^[Question 3 complete]
+
+### Question 4
+
+```{r}
+ggplot(diamonds, aes(x=carat, y=price, color=clarity))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+```
+
+This graph is harder to read as many of the points on the graph are overlapping so it is hard to see where all the individual points are as they are all clumped together. However, similar to color, as carat increases the price does as well for the diamond clarities. 
+
+^[Question 4 complete]
+
+### Question 5
+
+```{r}
+ggplot(diamonds,aes(x=carat, y=price))+geom_smooth(method = "lm", color = "black")+facet_grid(color~clarity)
+```
+
+In general, all the color and clarities of diamonds- no matter how nice they are- tend to follow a positive trend being as carats increase, so does the price of the diamonds. The least drastic and gradual increase in slope happens with the I1 diamonds, and the IF and D combination has the steepest slope and relationship. 
+
+^[Question 5 complete]
+
+
+###Question 6
+
+```{r}
+diamonds %>%
+  mutate(price_per_carat = price / carat) %>%
+  group_by(color, clarity) %>%
+  summarize(avg_ppc = mean(price_per_carat, na.rm = TRUE), .groups = "drop") %>% arrange(desc(avg_ppc)) %>% head(10) %>% knitr::kable()
+```
+
+The table generally agrees with the plots as I observed D and IF had the steepest slope with the largest carat price. The table also shows that the VS diamonds tend to have the lowest price per carat which agrees with the plots as the VS diamonds have the shortest lines with their largest carat diamond being the cheapest.
+
+^[Question 6 complete]
+
+
+
