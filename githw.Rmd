@@ -1,12 +1,15 @@
 ---
 title: "GitHub HW"
-output: html_document
+output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+library(usethis)
 library(dplyr)
 library(tidyverse)
+use_git_config(user.name ="lmoylan11", user.email = "lmoylan@muhlenberg.edu")
+create_github_token()
 ```
 
 ```{r}
@@ -14,12 +17,11 @@ clean_diamond=ggplot2::diamonds %>%
   filter(
     (color == "D" | color == "G" | color == "J"), 
     (clarity == "I1" | clarity == "VS1" | clarity == "IF")
-  ) %>% count(color,clarity)
-head(clean_diamond) %>% knitr::kable()
+  )
 ```
 ^[Question 1 complete]
 
-###Question 2
+### Question 2
 
 
 ```{r}
@@ -35,27 +37,27 @@ There is a positive, moderate strength relationship between carat and price of d
 
 
 ```{r}
-ggplot(diamonds, aes(x=carat, y=price, color=color))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+ggplot(diamonds, aes(x=carat, y=price, color=color))+geom_point(alpha=0.5)+geom_smooth(method="lm", group="diamonds")
 ```
 
-Generally, as the carat increases for all diamond colors, the price does as well. However, all the diamonds tend to follow this relationship no matter their color. Diamond color G, H, I, J, E, F all follow the trend of increasing carats leading to inceeasing price. However, diamond color D tends to have a higher price at lower carats. 
+Generally, as the carat increases for all diamond colors, the price does as well. However, all the diamonds tend to follow this relationship no matter their color. Diamond colors D, E, and F appear to be more expensive at lower carats while I and J diamond colors appear to be more expensive at higher carats, and not as expensive as diamond colors D, E, and F at lower carats.  
 
 ^[Question 3 complete]
 
 ### Question 4
 
 ```{r}
-ggplot(diamonds, aes(x=carat, y=price, color=clarity))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+ggplot(diamonds, aes(x=carat, y=price,color=color, shape=clarity, linetype=clarity))+geom_point(alpha=0.5)+geom_smooth(method="lm")
 ```
 
-This graph is harder to read as many of the points on the graph are overlapping so it is hard to see where all the individual points are as they are all clumped together. However, similar to color, as carat increases the price does as well for the diamond clarities. 
+This graph is way harder to read and a lot less clear as there are many points and lines that are overlapping so it is hard to see each individual point. Additionally, there are not enough discrete variables to represent all the different clarities of the diamonds. 
 
 ^[Question 4 complete]
 
 ### Question 5
 
 ```{r}
-ggplot(diamonds,aes(x=carat, y=price))+geom_smooth(method = "lm", color = "black")+facet_grid(color~clarity)
+ggplot(diamonds,aes(x=carat, y=price))+geom_smooth(method = "lm", color = "black")+facet_grid(color~clarity)+geom_point()
 ```
 
 In general, all the color and clarities of diamonds- no matter how nice they are- tend to follow a positive trend being as carats increase, so does the price of the diamonds. The least drastic and gradual increase in slope happens with the I1 diamonds, and the IF and D combination has the steepest slope and relationship. 
@@ -63,7 +65,7 @@ In general, all the color and clarities of diamonds- no matter how nice they are
 ^[Question 5 complete]
 
 
-###Question 6
+### Question 6
 
 ```{r}
 diamonds %>%

@@ -6,28 +6,16 @@ clean_diamond=ggplot2::diamonds %>%
   filter(
     (color == "D" | color == "G" | color == "J"), 
     (clarity == "I1" | clarity == "VS1" | clarity == "IF")
-  ) %>% count(color,clarity)
-head(clean_diamond) %>% knitr::kable()
+  )
 ```
-
-| color | clarity |    n |
-|:------|:--------|-----:|
-| D     | I1      |   42 |
-| D     | VS1     |  705 |
-| D     | IF      |   73 |
-| G     | I1      |  150 |
-| G     | VS1     | 2148 |
-| G     | IF      |  681 |
 
 [^1]
 
-###Question 2
+### Question 2
 
 ``` r
 ggplot(diamonds, aes(x=carat, y=price))+geom_point(alpha=0.1)+geom_smooth(method="lm", color="red")
 ```
-
-    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](githw_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -39,45 +27,40 @@ price of diamonds.
 ### Question 3
 
 ``` r
-ggplot(diamonds, aes(x=carat, y=price, color=color))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+ggplot(diamonds, aes(x=carat, y=price, color=color))+geom_point(alpha=0.5)+geom_smooth(method="lm", group="diamonds")
 ```
-
-    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](githw_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 Generally, as the carat increases for all diamond colors, the price does
 as well. However, all the diamonds tend to follow this relationship no
-matter their color. Diamond color G, H, I, J, E, F all follow the trend
-of increasing carats leading to inceeasing price. However, diamond color
-D tends to have a higher price at lower carats.
+matter their color. Diamond colors D, E, and F appear to be more
+expensive at lower carats while I and J diamond colors appear to be more
+expensive at higher carats, and not as expensive as diamond colors D, E,
+and F at lower carats.
 
 [^3]
 
 ### Question 4
 
 ``` r
-ggplot(diamonds, aes(x=carat, y=price, color=clarity))+geom_point(alpha=0.5)+geom_smooth(method="lm", color="red")
+ggplot(diamonds, aes(x=carat, y=price,color=color, shape=clarity, linetype=clarity))+geom_point(alpha=0.5)+geom_smooth(method="lm")
 ```
-
-    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](githw_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
-This graph is harder to read as many of the points on the graph are
-overlapping so it is hard to see where all the individual points are as
-they are all clumped together. However, similar to color, as carat
-increases the price does as well for the diamond clarities.
+This graph is way harder to read and a lot less clear as there are many
+points and lines that are overlapping so it is hard to see each
+individual point. Additionally, there are not enough discrete variables
+to represent all the different clarities of the diamonds.
 
 [^4]
 
 ### Question 5
 
 ``` r
-ggplot(diamonds,aes(x=carat, y=price))+geom_smooth(method = "lm", color = "black")+facet_grid(color~clarity)
+ggplot(diamonds,aes(x=carat, y=price))+geom_smooth(method = "lm", color = "black")+facet_grid(color~clarity)+geom_point()
 ```
-
-    ## `geom_smooth()` using formula 'y ~ x'
 
 ![](githw_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -89,7 +72,7 @@ the steepest slope and relationship.
 
 [^5]
 
-###Question 6
+### Question 6
 
 ``` r
 diamonds %>%
